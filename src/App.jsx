@@ -18,7 +18,12 @@ function Results({ movies, loading }) {
   return (
     <div className="app">
       <h1>Search Results 🎬</h1>
-      {loading ? <Loader /> : <MovieList movies={movies} />}
+
+      {loading ? (
+        <Loader />
+      ) : (
+        <MovieList movies={movies} />
+      )}
     </div>
   );
 }
@@ -26,44 +31,93 @@ function Results({ movies, loading }) {
 function App() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
-  const API_KEY = "YOUR_API_KEY";
+  const navigate = useNavigate();
 
   const searchMovies = async (movieName) => {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `https://www.omdbapi.com/?s=${movieName}&apikey=${API_KEY}`
+      // Loading effect dekhne ke liye
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const dummyMovies = [
+        {
+          imdbID: "1",
+          Title: "Shiddat",
+          Year: "2021",
+          Poster:
+            "https://via.placeholder.com/200x300?text=Shiddat",
+        },
+        {
+          imdbID: "2",
+          Title: "3 Idiots",
+          Year: "2009",
+          Poster:
+            "https://via.placeholder.com/200x300?text=3+Idiots",
+        },
+        {
+          imdbID: "3",
+          Title: "Dangal",
+          Year: "2016",
+          Poster:
+            "https://via.placeholder.com/200x300?text=Dangal",
+        },
+        {
+          imdbID: "4",
+          Title: "Pathaan",
+          Year: "2023",
+          Poster:
+            "https://via.placeholder.com/200x300?text=Pathaan",
+        },
+        {
+          imdbID: "5",
+          Title: "Jawan",
+          Year: "2023",
+          Poster:
+            "https://via.placeholder.com/200x300?text=Jawan",
+        },
+        {
+          imdbID: "6",
+          Title: "Dhurandar",
+          Year: "2026",
+          Poster: 
+            "https://via.placeholder.com/200x300?text=Dhurandar",
+        },
+      ];
+
+      const filteredMovies = dummyMovies.filter((movie) =>
+        movie.Title.toLowerCase().includes(movieName.toLowerCase())
       );
 
-      const data = await response.json();
+      setMovies(filteredMovies);
 
-      if (data.Search) {
-        setMovies(data.Search);
-      } else {
-        setMovies([]);
-      }
-
-      navigate("/results"); 
+      navigate("/results");
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
-      setLoading(true);
     }
   };
 
   return (
     <Routes>
-      <Route path="/" element={<Home onSearch={searchMovies} />} />
+      <Route
+        path="/"
+        element={<Home onSearch={searchMovies} />}
+      />
+
       <Route
         path="/results"
-        element={<Results movies={movies} loading={loading} />}
+        element={
+          <Results
+            movies={movies}
+            loading={loading}
+          />
+        }
       />
     </Routes>
   );
-} 
+}
 
 export default App;
