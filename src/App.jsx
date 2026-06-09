@@ -8,7 +8,7 @@ import Loader from "./components/Loader";
 function Home({ onSearch }) {
   return (
     <div className="app">
-      <h1>Movie App MMMM</h1>
+      <h1>Movie App 🎬</h1>
       <SearchBar fetchMovies={onSearch} />
     </div>
   );
